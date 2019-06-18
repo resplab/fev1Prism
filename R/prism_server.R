@@ -16,8 +16,8 @@ thisSession$LONG_RUN_STATUS_READY<-0
 thisSession$LONG_RUN_STATUS_DONE<-1
 thisSession$LONG_RUN_STATUS_ERROR<- -1
 
-thisSession$MODEL_DESCRIPTION<-"This is ACCEPT - PRISM enabled!"
-thisSession$MODEL_VERSION<- packageVersion('accept')
+thisSession$MODEL_DESCRIPTION<-"This is fev1 - PRISM enabled!"
+thisSession$MODEL_VERSION<- packageVersion('fev1')
 
 connect_redis_prism <- function (){
   rredis::redisConnect(host = thisSession$REDIS_ADDRESS, port = thisSession$REDIS_PORT, password = "H1Uf5o6326n6C2276m727cU82O")
