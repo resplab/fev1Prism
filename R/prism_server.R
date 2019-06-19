@@ -51,7 +51,6 @@ test<-function(...)
 gateway<-function(...)
 {
   arguments=list(...)
-  
   func<-arguments$func
   
   session_id<-arguments$session_id
@@ -77,11 +76,10 @@ gateway<-function(...)
   arguments$session_id<-NULL
   
   if(!is.null(session_id)) restore_session(session_id)
-  
   if(length(arguments)==0) 
   {out<-eval(parse(text=paste(func,"()")))}
   else 
-  {out<-eval(parse(text=paste(func,substring(deparse(arguments),5))))}
+  {out<-eval(parse(text=paste(func,substring(deparse(arguments, width.cutoff = 500L),5))))}
   
   if(!is.null(session_id)) save_session(session_id)
   
