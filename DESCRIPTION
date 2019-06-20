@@ -1,6 +1,6 @@
 Package: fev1Prism
 Title: R package for the FEV1 predictor described in https://doi.org/10.1503/cmaj.151483 - PRISM Enabled
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(
     person("Amin", "Adibi", email = "adibi@alumni.ubc.ca", role = c("aut", "cph")),
     person("Mohsen", "Sadatsafavi", email = "mohsen.sadatsafavi@ubc.ca", role = c("aut", "cre")))
@@ -13,5 +13,6 @@ Imports:
     stats,
     MASS,
     dplyr,
+    rredis,
     fev1 (>= 0.1.0)
 RoxygenNote: 6.1.1
