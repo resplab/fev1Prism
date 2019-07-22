@@ -11,7 +11,7 @@ thisSession<-new.env()
 
 thisSession$redis_connection_status<-0
 
-thisSession$REDIS_ADDRESS="prism.resp.core.ubc.ca"
+thisSession$REDIS_ADDRESS="prism-test-2.mytlmi.ng.0001.cac1.cache.amazonaws.com"
 thisSession$REDIS_PORT <- 3001
 
 thisSession$MODE_REQUIRE_API_KEY=TRUE;
@@ -25,10 +25,36 @@ thisSession$LONG_RUN_STATUS_ERROR<- -1
 thisSession$MODEL_DESCRIPTION<-paste0("This is ",get_my_name()," - PRISM enabled!")
 thisSession$MODEL_VERSION<-paste(packageVersion(get_my_name()))
 
+thisSession$master<-rbind(
+  c(api_key="123456",                 models="epicPrism:1,fev1Prism:1",owner_name="Mohsen Sadatsafavi",owner_email="msafavi@mail.ubc.ca",date_issues="2019.06.19"),
+  c(api_key="jEpmi6AyfQsK6TiaPeMbQPb",models="fev1Prism:1",            owner_name="Amin Adibi",        owner_email="maadibi@mail.ubc.ca",date_issues="2019.06.19")
+)
+
+
+
+#Each model gateway will check for the presense of (MODEL:API:access level) e.g., (epicPRISM:123456 , 1)
+give_access<-function()
+{
+  connect_to_redis()
+  for(i in 1:dim(thisSession$master)[1])
+  {
+    api_key=thisSession$master[i,'api_key']
+    models<-strsplit(thisSession$master[i,'models'],",")[[1]]
+    for(model in models)
+    {
+      tmp<-strsplit(model,":")[[1]]
+      redisSet(paste0("MT:Access:",tmp[1],":",api_key),as.numeric(tmp[2]))
+    }
+  }
+  redisClose()
+}
+
+
 connect_redis_prism <- function (){
   if(thisSession$redis_connection_status==0)
   {
-    rredis::redisConnect(host = thisSession$REDIS_ADDRESS, port = thisSession$REDIS_PORT, password = "H1Uf5o6326n6C2276m727cU82O")
+    rredis::redisConnect(host = thisSession$REDIS_ADDRESS, port = thisSession$REDIS_PORT)#, password = "H1Uf5o6326n6C2276m727cU82O")
+    give_access()
     thisSession$redis_connection_status<-1
   }
 }
